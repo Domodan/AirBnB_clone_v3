@@ -1,51 +1,28 @@
 #!/usr/bin/python3
-""" Script that imports a Blueprint and runs Flask """
-from flask import Flask, make_response, jsonify
-from flask_cors import CORS
-from models import storage
-from api.v1.views import app_views
-from os import getenv
-from flasgger import Swagger
+"""app.py to connect to API"""
+import storage from models
+import app_views from api.v1.views
+from flask import Flask
+from flask import Blueprint
 
-app = Flask(__name__)
-app.register_blueprint(app_views)
-CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
-app.config['SWAGGER'] = {
-    "swagger_version": "2.0",
-    "title": "Flasgger",
-    "headers": [
-        ('Access-Control-Allow-Origin', '*'),
-        ('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS"),
-        ('Access-Control-Allow-Credentials', "true"),
-    ],
-    "specs": [
-        {
-            "version": "1.0",
-            "title": "HBNB API",
-            "endpoint": 'v1_views',
-            "description": 'HBNB REST API',
-            "route": '/v1/views',
-        }
-    ]
-}
-swagger = Swagger(app)
 
+app = Flask('app')
+
+#register the blueprint app_views to your Flask instance app
+app_views = Blueprint("app", __name__)
+
+#declare a method to handle @app.teardown_appcontext that calls storage.close()
 @app.teardown_appcontext
-def teardown_session(exception):
-    """ Closes storage session """
+def teardown_appcontext:
+    """teardown_appcontext"""
     storage.close()
 
+def htmlNotFoundError():
+    """htmlNotFoundError to handle HTML 404 Not Found errors"""
+    return '{\n\t"error": "Not found"\n}'
 
-@app.errorhandler(404)
-def not_found(error):
-    """ Returns JSON response with 404 status """
-    return make_response(jsonify({"error": "Not found"}), 404)
-
-
-if __name__ == '__main__':
-    HBNB_API_HOST = getenv('HBNB_API_HOST')
-    HBNB_API_PORT = getenv('HBNB_API_PORT')
-
-    host = '0.0.0.0' if not HBNB_API_HOST else HBNB_API_HOST
-    port = 5000 if not HBNB_API_PORT else HBNB_API_PORT
-    app.run(host=host, port=port, threaded=True)
+if __name__ == "__main__":
+    #run your Flask server (variable app) with:
+    #host = environment variable HBNB_API_HOST or 0.0.0.0 as default value
+    #port = environment variable HBNB_API_PORT or 5000 as default value
+    app.run(host='0.0.0.0', port=5000)
