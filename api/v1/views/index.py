@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
     index.py to connect to API
+    Create an endpoint that retrieves the number of each objects by type
 """
 import app_views from api.v1.views
 hbnbClass = {
@@ -26,6 +27,7 @@ hbnbText = {
 def hbnbStatus():
     """hbnbStatus"""
     return ('{\n\t"status": "OK"\n}')
+
 
 @app_views.route('/api/v1/stats')
 def hbnbStats():

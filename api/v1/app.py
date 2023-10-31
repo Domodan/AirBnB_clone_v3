@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" Script that imports a Blueprint and runs Flask """
+"""
+    Script that imports a Blueprint and runs Flask
+"""
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 from models import storage
@@ -29,6 +31,7 @@ app.config['SWAGGER'] = {
     ]
 }
 swagger = Swagger(app)
+
 
 @app.teardown_appcontext
 def teardown_session(exception):

@@ -15,15 +15,15 @@ from os import getenv
                  strict_slashes=False)
 def places_amenities(place_id):
     """ Retrieves the list of all Amenities objects in a Place"""
-    place = storage.get("Place", place_id)
-    if not place:
+    pla = storage.get("Place", place_id)
+    if not pla:
         abort(404)
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        l = [amenity.to_dict() for amenity in place.amenities]
+        l_am = [amenity.to_dict() for amenity in pla.amenities]
     else:
-        l = [storage.get("Amenity", id).to_dict() for id in place.amenity_ids]
-    return jsonify(l)
+        l_am = [storage.get("Amenity", id).to_dict() for id in pla.amenity_ids]
+    return jsonify(l_am)
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
