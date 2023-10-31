@@ -27,6 +27,7 @@ def hbnbStatus():
     """hbnbStatus"""
     return ('{\n\t"status": "OK"\n}')
 
+
 @app_views.route('/api/v1/stats')
 def hbnbStats():
     """hbnbStats"""
