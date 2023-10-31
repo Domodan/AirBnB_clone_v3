@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
     index.py to connect to API
+    Create an endpoint that retrieves the number of each objects by type
 """
 import app_views from api.v1.views
 hbnbClass = {
