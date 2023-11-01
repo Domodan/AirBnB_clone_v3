@@ -3,7 +3,7 @@
     index.py to connect to API
     Create an endpoint that retrieves the number of each objects by type
 """
-import app_views from api.v1.views
+from api.v1.views import app_views
 hbnbClass = {
     'Amenity': Amenity,
     'City': City,
