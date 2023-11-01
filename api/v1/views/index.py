@@ -1,43 +1,22 @@
 #!/usr/bin/python3
-"""
-    index.py to connect to API
-    Create an endpoint that retrieves the number of each objects by type
-"""
+""" Index """
 from api.v1.views import app_views
-hbnbClass = {
-    'Amenity': Amenity,
-    'City': City,
-    'Place': Place,
-    'State': State,
-    'Review': Review,
-    'User': User
-}
-
-hbnbText = {
-    "amenities",
-    "cities",
-    "places",
-    "reviews",
-    "states",
-    "users"
-}
+from flask import jsonify
+from models import storage
 
 
-@app_views.route('/status')
-def hbnbStatus():
-    """hbnbStatus"""
-    return ('{\n\t"status": "OK"\n}')
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
+def status():
+    """ Returns JSON """
+    return jsonify(status="OK")
 
 
-@app_views.route('/api/v1/stats')
-def hbnbStats():
-    """hbnbStats"""
-    numClass = len(hbnbText)
-    str = '{\n\t"'
-    for count in range(num):
-        str += hbnbClass[count][0]
-        str += "\": "
-        str += str(storage.count(hbnbClass[count][0]))
-        if count < numClass:
-            str += ",\n"
-    str += "\n}\n"
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def stats():
+    """ Returns the number of each instance type """
+    return jsonify(amenities=storage.count("Amenity"),
+                   cities=storage.count("City"),
+                   places=storage.count("Place"),
+                   reviews=storage.count("Review"),
+                   states=storage.count("State"),
+                   users=storage.count("User"))
